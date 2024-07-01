@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mygame-app
+  labels:
+    app: mygame-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mygame-app
+  template:
+    metadata:
+      labels:
+        app: mygame-app
+    spec:
+      containers:
+      - name: mygame-app
+        image: <your registry>/mygame-app:1.0
+        ports:
+        - containerPort: 8000
+        env:
+        - name: MYSQL_HOST
+          value: "mygame-db-service"
+        - name: MYSQL_DATABASE
+          value: "balance_game_db"
+        - name: MYSQL_USER
+          value: "flaskuser"
+        - name: MYSQL_PASSWORD
+          value: "1234"
+

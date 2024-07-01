@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weather-app
+  namespace: ns99
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: weather-app
+  template:
+    metadata:
+      labels:
+        app: weather-app
+    spec:
+      containers:
+      - name: weather-app
+        image: cielciel/weather-app:latest
+        ports:
+        - containerPort: 5000
+        env:
+        - name: REDIS_HOST
+          value: "redis" # Redis 서비스 이름
+        - name: REDIS_PORT
+          value: "6379"
+        - name: CODERUN_URL
+          value: "https://serverless-coderun.cloud.kt.com/weather-app-test/weather-app-function" # CodeRun 함수 URL
+      imagePullSecrets:
+      - name: myreg-sec
+

@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mygame-db
+  labels:
+    app: mygame-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mygame-db
+  template:
+    metadata:
+      labels:
+        app: mygame-db
+    spec:
+      containers:
+      - name: mygame-db
+        image: <your registry>/mygame-db
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ALLOW_EMPTY_PASSWORD
+          value: "yes"
+        - name: MYSQL_DATABASE
+          value: "balance_game_db"
+        volumeMounts:
+        - name: mygame-initdb-config
+          mountPath: /docker-entrypoint-initdb.d
+      volumes:
+      - name: mygame-initdb-config
+        configMap:
+          name: mygame-initdb-config
+          items:
+          - key: init.sql
+            path: init.sql
+

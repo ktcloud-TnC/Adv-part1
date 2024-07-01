@@ -1,0 +1,20 @@
+# employee-virtualservice.yaml
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: employee
+  namespace: lab
+spec:
+  hosts:
+  - "employee.211-34-229-58.nip.io"
+  gateways:
+  - labui-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /employee
+    route:
+    - destination:
+        host: labui.lab.svc.cluster.local
+        port:
+          number: 80

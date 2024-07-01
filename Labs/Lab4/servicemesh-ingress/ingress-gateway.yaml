@@ -1,0 +1,17 @@
+# lab-gateway.yaml
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: labui-gateway
+  namespace: lab
+spec:
+  selector:
+    istio: ingressgateway  # use Istio's built-in ingress gateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "department.example.com"
+    - "employee.example.com"

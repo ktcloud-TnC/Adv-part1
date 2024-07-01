@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: labapi-deployment
+  namespace: lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: labapi
+  template:
+    metadata:
+      labels:
+        app: labapi
+    spec:
+      containers:
+      - name: labapi
+        image: registry.cloud.kt.com/66bisoga/labapi:2.5
+        env:
+        - name: DB_NAME
+          value: "mydb"
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: user
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: password
+        - name: DB_HOST
+          value: "211.34.229.56" #mysql
+        - name: DB_PORT
+          value: "3306"
+        ports:
+        - containerPort: 8000
+      imagePullSecrets:
+      - name: mysecret
+      nodeSelector:
+        key: worker
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: labapi-service
+  namespace: lab
+spec:
+  type: LoadBalancer
+  selector:
+    app: labapi
+  ports:
+  - protocol: TCP
+    port: 8000
+    targetPort: 8000

@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mygame-db
+  namespace: default
+  labels:
+    app: mygame-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mygame-db
+  template:
+    metadata:
+      labels:
+        app: mygame-db
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: edu99-cluster.worker01
+      containers:
+      - name: mygame-db
+        image: <your registry>/mygame-db
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ALLOW_EMPTY_PASSWORD
+          value: "yes"
+        - name: MYSQL_DATABASE
+          value: "balance_game_db"
+        volumeMounts:
+        - name: mygame-initdb-config
+          mountPath: /docker-entrypoint-initdb.d
+        - name: mygame-db-storage
+          mountPath: /var/lib/mysql  # 데이터베이스 데이터를 저장할 경로
+      volumes:
+      - name: mygame-initdb-config
+        configMap:
+          name: mygame-initdb-config
+          items:
+          - key: init.sql
+            path: init.sql
+      - name: mygame-db-storage
+        persistentVolumeClaim:
+          claimName: mygame-db-pvc
+

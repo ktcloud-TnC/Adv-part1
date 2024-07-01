@@ -1,0 +1,36 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: labui-gateway
+  namespace: lab
+spec:
+  selector:
+    istio: ingressgateway # Istio ingress gateway를 사용
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: labui-virtual-service
+  namespace: lab
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - labui-gateway
+  http:
+  - route:
+    - destination:
+        host: labui-service
+        subset: v1-0
+      weight: 90
+    - destination:
+        host: labui-service
+        subset: v2-0
+      weight: 10

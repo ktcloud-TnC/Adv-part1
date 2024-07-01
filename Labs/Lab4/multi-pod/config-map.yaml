@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: lab
+data:
+  API_URL: "http://back.211-34-229-58.nip.io/"
+  PHOTO_URL: "http://back.211-34-229-58.nip.io/Photos/"

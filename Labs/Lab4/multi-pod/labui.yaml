@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: labui-deployment
+  namespace: lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: labui
+  template:
+    metadata:
+      labels:
+        app: labui
+    spec:
+      containers:
+      - name: labui
+        image: registry.cloud.kt.com/66bisoga/labui:2.0
+        env:
+        - name: REACT_APP_BACKEND_URL
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: API_URL
+        - name: REACT_APP_PHOTO_URL
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: PHOTO_URL
+        #- name: BACKEND_URL
+        #  value: "http://labapi-service:8000"
+        ports:
+        - containerPort: 3000
+      imagePullSecrets:
+      - name: mysecret
+      nodeSelector:
+        key: worker
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: labui-service
+  namespace: lab
+spec:
+  type: LoadBalancer
+  selector:
+    app: labui
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 3000

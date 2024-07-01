@@ -1,0 +1,13 @@
+# labui-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: labui
+  namespace: lab
+spec:
+  selector:
+    app: labui
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000  # labui 애플리케이션이 리스닝하는 포트

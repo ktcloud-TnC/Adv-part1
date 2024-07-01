@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: rs-myweb
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: myweb
+  template:
+    metadata:
+      name: myweb-pod
+      labels:
+        app: myweb
+    spec:
+      containers:
+      - name: myweb-container
+        image: <your registry>/myweb:1.0
+      imagePullSecrets:
+      - name: myreg-sec
+
+

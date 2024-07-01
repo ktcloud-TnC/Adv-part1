@@ -1,0 +1,14 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: labui-destination
+  namespace: lab
+spec:
+  host: labui-service
+  subsets:
+  - name: v1-0
+    labels:
+      version: v1-0
+  - name: v2-0
+    labels:
+      version: v2-0

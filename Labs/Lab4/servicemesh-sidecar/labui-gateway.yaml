@@ -1,0 +1,37 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: labui-virtualservice
+  namespace: lab
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - labui-gateway
+  http:
+  - match:
+    - uri:
+        prefix: "/department" # 모든 트래픽을 labapi로 라우팅
+    - uri:
+        prefix: "/employee" 
+    route:
+    - destination:
+        host: labui-service
+        port:
+          number: 80
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: labui-gateway
+  namespace: lab
+spec:
+  selector:
+    istio: ingressgateway # 사용 중인 Istio Ingress Gateway의 라벨
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"

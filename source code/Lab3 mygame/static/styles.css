@@ -1,0 +1,38 @@
+body {
+    background-color: #f8f9fa;
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.card {
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.card img {
+    width: 100%;
+    height: auto;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border: none;
+}
+
+.card-header {
+    background-color: #f8f9fa;
+}
+
+.card-body p {
+    margin: 0;
+}
+

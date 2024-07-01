@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Balance Game</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="text-center mt-5">
+            <h1>Admin - Balance Game</h1>
+        </div>
+        <div class="row justify-content-center mt-3">
+            <div class="col-md-8">
+                <div class="card text-center">
+                    <div class="card-header">
+                        <h2>Add New Game</h2>
+                    </div>
+                    <div class="card-body">
+                        <form action="/admin" method="POST" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="question">Question</label>
+                                <input type="text" class="form-control form-control-lg" id="question" name="question" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="option_a">Option A</label>
+                                <input type="text" class="form-control form-control-lg" id="option_a" name="option_a" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="option_b">Option B</label>
+                                <input type="text" class="form-control form-control-lg" id="option_b" name="option_b" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="image">Image</label>
+                                <input type="file" class="form-control" id="image" name="image">
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-lg">Add Game</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-5">
+            <h2>Manage Existing Games</h2>
+            <ul class="list-group">
+                {% for game in games %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ game[1] }} - {{ game[8] }}
+                        {% if not game[7] %}  <!-- is_closed 값이 False인 경우에만 버튼 표시 -->
+                        <a href="/close_game/{{ game[0] }}" class="btn btn-danger btn-sm">Close Game</a>
+                        {% else %}
+                        <span class="badge badge-success">Closed</span>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: labui-v2-0
+  labels:
+    app: labui
+    version: v2-0
+  namespace: lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: labui
+      version: v2-0
+  template:
+    metadata:
+      labels:
+        app: labui
+        version: v2-0
+    spec:
+      containers:
+      - name: labui
+        image: registry.cloud.kt.com/66bisoga/labui:2.5
+        env:
+        - name: REACT_APP_BACKEND_URL
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: API_URL
+        - name: REACT_APP_PHOTO_URL
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: PHOTO_URL
+        ports:
+        - containerPort: 4000
+      imagePullSecrets:
+      - name: mysecret
+      nodeSelector:
+        key: worker
+

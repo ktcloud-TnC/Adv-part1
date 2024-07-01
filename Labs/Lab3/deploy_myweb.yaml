@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myweb-deploy
+spec:
+  selector:
+    matchLabels:
+      app: myweb
+  replicas: 5
+  template:
+    metadata:
+      labels:
+        app: myweb
+    spec:
+      containers:
+      - image: <your registry>/myweb:1.0
+        name: myweb-container
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: myreg-sec
+
